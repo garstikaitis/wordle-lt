@@ -18,7 +18,7 @@ function generateGridTiles(props: WordleGridProps) {
     return (
       <View style={styles.row} key={wordIndex}>
         {word.map((letter, index) => {
-          return <GridTile color={color} key={index} letter={letter} />;
+          return <GridTile color={color} key={index} letter={letter.letter} />;
         })}
       </View>
     );

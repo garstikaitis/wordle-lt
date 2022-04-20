@@ -2,21 +2,15 @@ import { useState } from "react";
 import { View, Text } from "react-native";
 import WordleGrid from "../WordleGrid/WordleGrid";
 import WordleKeyboard from "../WordleKeyboard/WordleKeyboard";
+import defaultWordState from "./utils/defaultWordState";
 
-const CORRECT_WORD = "STORE";
+const CORRECT_WORD = "LABAS";
 
 export default function Wordle() {
   const [currentWord, setCurrentWord] = useState("");
   const [activeRowIndex, setActiveRowIndex] = useState(0);
   const [activeLetterIndex, setActiveLetterIndex] = useState(0);
-  const [words, setWords] = useState([
-    ["", "", "", "", ""],
-    ["", "", "", "", ""],
-    ["", "", "", "", ""],
-    ["", "", "", "", ""],
-    ["", "", "", "", ""],
-    ["", "", "", "", ""],
-  ]);
+  const [words, setWords] = useState(defaultWordState);
 
   function checkIfWordsMatch() {
     return currentWord === CORRECT_WORD;
@@ -35,19 +29,25 @@ export default function Wordle() {
   function checkWord(keyboardButton: string) {
     if (keyboardButton === "❌") {
       const deletedWord = deleteCharacterFromWordAndAddSpaces();
-      console.log(deletedWord);
       let wordUpdate = [...words];
-      wordUpdate[activeRowIndex] = deletedWord;
+      wordUpdate[activeRowIndex][activeLetterIndex - 1] = {
+        letter: "",
+        isTouched: true,
+        isInCorrectPlace: false,
+        isInWord: false,
+      };
       setWords(wordUpdate);
       setCurrentWord(deletedWord.join(""));
-      setActiveLetterIndex(activeLetterIndex - 1);
+      if (activeLetterIndex !== 0) {
+        setActiveLetterIndex(activeLetterIndex - 1);
+      }
     } else if (keyboardButton === "🏄🏿‍♀️") {
       if (currentWord.length === 5) {
         if (checkIfWordsMatch()) {
           alert("VICTORY");
         } else {
           let wordUpdate = [...words];
-          wordUpdate[activeRowIndex] = currentWord.split("");
+          wordUpdate[activeRowIndex] = defaultWordState[0];
           setWords(wordUpdate);
           setCurrentWord("");
           setActiveLetterIndex(0);
@@ -60,7 +60,7 @@ export default function Wordle() {
       }
       setCurrentWord(currentWord + keyboardButton);
       let wordUpdate = [...words];
-      wordUpdate[activeRowIndex][activeLetterIndex] = keyboardButton;
+      wordUpdate[activeRowIndex][activeLetterIndex].letter = keyboardButton;
       setWords(wordUpdate);
       setActiveLetterIndex(activeLetterIndex + 1);
     }
