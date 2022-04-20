@@ -14,18 +14,11 @@ export default function WordleGrid(props: WordleGridProps) {
 
 function generateGridTiles(props: WordleGridProps) {
   const color = useColors();
-  console.log(props.words.length);
   return props.words.map((word, wordIndex) => {
     return (
       <View style={styles.row} key={wordIndex}>
-        {word.split("").map((letter, index) => {
-          return (
-            <GridTile
-              color={color}
-              key={index}
-              letter={props.currentWord.charAt(index)}
-            />
-          );
+        {word.map((letter, index) => {
+          return <GridTile color={color} key={index} letter={letter} />;
         })}
       </View>
     );
