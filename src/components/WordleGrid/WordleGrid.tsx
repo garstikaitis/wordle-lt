@@ -7,21 +7,26 @@ import { WordleGridProps } from "./WordleGrid.types";
 export default function WordleGrid(props: WordleGridProps) {
   return (
     <View>
-      <View style={styles.row}>
-        {generateGridTiles(props.cols, props.rows)}
-      </View>
+      <View>{generateGridTiles(props)}</View>
     </View>
   );
 }
 
-function generateGridTiles(cols: number, rows: number) {
+function generateGridTiles(props: WordleGridProps) {
   const color = useColors();
-  return [...Array(cols).keys()].map(row => {
+  console.log(props.words.length);
+  return props.words.map((word, wordIndex) => {
     return (
-      <View key={row}>
-        {[...Array(rows).keys()].map(letter => (
-          <GridTile color={color} key={letter} />
-        ))}
+      <View style={styles.row} key={wordIndex}>
+        {word.split("").map((letter, index) => {
+          return (
+            <GridTile
+              color={color}
+              key={index}
+              letter={props.currentWord.charAt(index)}
+            />
+          );
+        })}
       </View>
     );
   });

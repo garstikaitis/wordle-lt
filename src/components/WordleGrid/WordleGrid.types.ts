@@ -1,4 +1,5 @@
 export interface WordleGridProps {
-  cols: number;
-  rows: number;
+  activeRowIndex: number;
+  currentWord: string;
+  words: string[];
 }

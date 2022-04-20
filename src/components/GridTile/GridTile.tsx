@@ -6,7 +6,7 @@ import styles from "./GridTile.styles";
 export default function GridTile(props: GridTileProps) {
   return (
     <View style={styles(props).tile}>
-      <Text style={styles(props).letter}>A</Text>
+      <Text style={styles(props).letter}>{props.letter}</Text>
     </View>
   );
 }

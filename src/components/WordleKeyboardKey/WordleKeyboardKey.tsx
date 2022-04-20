@@ -5,7 +5,10 @@ import styles from "./WordleKeyboardKey.styles";
 
 export default function WordleKeyboardKey(props: WordleKeyboardKeyProps) {
   return (
-    <TouchableOpacity style={styles(props).keyboardKey}>
+    <TouchableOpacity
+      onPress={() => props.onPress(props.keyboardButton)}
+      style={styles(props).keyboardKey}
+    >
       <Text style={styles(props).text}>{props.keyboardButton}</Text>
     </TouchableOpacity>
   );
