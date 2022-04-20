@@ -16,6 +16,31 @@ export default function Wordle() {
     return currentWord === CORRECT_WORD;
   }
 
+  function checkForCorrectLetters() {
+    const wordUpdate = [...words];
+    currentWord.split("").forEach((currentWordLetter, currentWordIndex) => {
+      if (CORRECT_WORD.split("").includes(currentWordLetter)) {
+        wordUpdate[activeRowIndex][currentWordIndex] = {
+          letter: currentWordLetter,
+          isInCorrectPlace: false,
+          isInWord: true,
+          isTouched: true,
+        };
+      }
+      CORRECT_WORD.split("").forEach(correctWordLetter => {
+        if (correctWordLetter === currentWordLetter) {
+          wordUpdate[activeRowIndex][currentWordIndex] = {
+            letter: currentWordLetter,
+            isInCorrectPlace: true,
+            isInWord: true,
+            isTouched: true,
+          };
+        }
+      });
+    });
+    setWords(words);
+  }
+
   function deleteCharacterFromWordAndAddSpaces(): string[] {
     let finalArray = ["", "", "", "", ""];
     currentWord.split("").forEach((letter, index) => {
@@ -47,8 +72,9 @@ export default function Wordle() {
           alert("VICTORY");
         } else {
           let wordUpdate = [...words];
-          wordUpdate[activeRowIndex] = defaultWordState[0];
+          wordUpdate[activeRowIndex] = defaultWordState[activeRowIndex];
           setWords(wordUpdate);
+          checkForCorrectLetters();
           setCurrentWord("");
           setActiveLetterIndex(0);
           setActiveRowIndex(activeRowIndex + 1);
